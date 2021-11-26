@@ -173,7 +173,8 @@ def menu_like(i):
     global browser
     global channel_name
     firefox_options.add_argument('--incognito')
-    #firefox_options.add_argument('--start-maximized')
+    firefox_options.add_argument("--window-size=1980,1020")
+    firefox_options.add_argument('--start-maximized')
     firefox_options.add_argument(f"user-agent=Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/{random.randint(100,800)}.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Mobile Safari/{random.randint(100,800)}.{random.randint(10,99)}")
     browser = webdriver.Chrome(options=firefox_options)
     browser.get('https://accounts.google.com/signin/v2/identifier?service=mail&passive=1209600&osid=1&continue=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&followup=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&emr=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin')
@@ -220,7 +221,8 @@ def menu_report(i):
     global browser
     global channel_name
     firefox_options.add_argument('--incognito')
-    #firefox_options.add_argument('--start-maximized')
+    firefox_options.add_argument("--window-size=1980,1020")
+    firefox_options.add_argument('--start-maximized')
     firefox_options.add_argument(f"user-agent=Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/{random.randint(100,800)}.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Mobile Safari/{random.randint(100,800)}.{random.randint(10,99)}")
     browser = webdriver.Chrome(options=firefox_options)
     browser.get('https://accounts.google.com/signin/v2/identifier?service=mail&passive=1209600&osid=1&continue=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&followup=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&emr=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin')
