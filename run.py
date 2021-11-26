@@ -1,5 +1,6 @@
 import undetected_chromedriver as uc
-uc.install()from selenium import webdriver
+uc.install()
+from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 from selenium.webdriver.common.by import By
@@ -76,8 +77,11 @@ def menu_comment(i):
     global channel_name
     action_change()
     sleep(1.5)
+    global get_comment
     multi_acc = wait(browser,30).until(EC.presence_of_all_elements_located((By.XPATH, '(//div[@class="account-item-content"])')))
-   
+    comment_file = "comment.txt"
+    comment_get = open(f"{cwd}/{comment_file}","r")
+    get_comment = myfile.read()
     for i in range(1,len(multi_acc)+1):
         channel_name = wait(browser,30).until(EC.presence_of_element_located((By.XPATH, f'(/html/body/div[2]/div/ytm-multi-page-menu-renderer/div/ytm-account-section-list-renderer/div/button/ytm-account-item-renderer/div/div/div/div[1])[{i}]'))).text
         sleep(1.5)
@@ -256,13 +260,13 @@ def menu_report(i):
 
 def yt_comment(i):
     sleep(3)
-
+    
     browser.get(targeturl)
     print(f"[*] [{channel_name}] Trying to Comment")
     wait(browser,30).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#app > div.page-container > ytm-watch > ytm-single-column-watch-next-results-renderer > ytm-item-section-renderer:nth-child(3) > lazy-list > ytm-comments-entry-point-header-renderer > button'))).click()
     wait(browser,30).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#app > div.page-container > ytm-watch > ytm-engagement-panel > ytm-engagement-panel-section-list-renderer > div > div > div.engagement-panel-content-wrapper > ytm-section-list-renderer > lazy-list > ytm-item-section-renderer > ytm-comments-header-renderer > ytm-comment-simplebox-renderer > div'))).click()
     input_comment = wait(browser,30).until(EC.presence_of_element_located((By.XPATH, '//textarea[@class="comment-simplebox-reply"]')))
-    input_comment.send_keys("test")
+    input_comment.send_keys(get_comment)
     wait(browser,30).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#app > div.page-container > ytm-watch > ytm-engagement-panel > ytm-engagement-panel-section-list-renderer > div > div > div.engagement-panel-content-wrapper > ytm-section-list-renderer > lazy-list > ytm-item-section-renderer > ytm-comments-header-renderer > ytm-comment-simplebox-renderer > div > div > c3-material-button:nth-child(2) > button'))).click()
     sleep(2)
     print(f"[*] [{channel_name}] Comment Successfully")
