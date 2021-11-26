@@ -1,5 +1,3 @@
-import undetected_chromedriver as uc
-uc.install()
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep
@@ -94,6 +92,40 @@ def menu_comment(i):
             action_change()
         except:
             pass
+def yt_report(i):
+    
+    print(f"[*] [{channel_name}] Trying to Report")
+    browser.save_screenshot("SCROLL_DOWN.png")
+    try:
+        scroll_down = wait(browser,60).until(EC.presence_of_element_located((By.XPATH, '//*[@id="container"]/h1/yt-formatted-string')))
+        browser.execute_script("arguments[0].scrollIntoView();", scroll_down)
+        
+    except:
+        browser.save_screenshot("errror_headles.png")
+   
+      
+    while True:
+    
+        try:
+            browser.execute_script("window.scrollTo(0, 1080)")
+            sleep(10)
+            target_report = wait(browser,5).until(EC.presence_of_element_located((By.XPATH, '(//ytd-comment-renderer/div[3]/div[2]/ytd-comment-action-buttons-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button)[1]')))
+            break
+        except:
+            browser.save_screenshot("errror_headles6.png")
+     
+    target_name = wait(browser,60).until(EC.presence_of_element_located((By.XPATH, '//a/ytd-channel-name/div/div/yt-formatted-string'))).text
+    target_report.click()
+    
+    print(f"[*] [{channel_name}] Found Comment from [{target_name}]")
+    xpath_el('//ytd-menu-service-item-renderer[@class="style-scope ytd-menu-popup-renderer iron-selected"]')
+    sleep(2)
+    xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-paper-dialog/yt-report-form-modal-renderer/tp-yt-paper-dialog-scrollable/div/div/yt-options-renderer/div/tp-yt-paper-radio-group/tp-yt-paper-radio-button[1]/div[1]')
+    sleep(2)
+    xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-paper-dialog/yt-report-form-modal-renderer/div/yt-button-renderer[2]/a/tp-yt-paper-button')
+    print(f"[*] [{channel_name}] Report Successfully")
+    sleep(2)
+    xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-paper-dialog[2]/yt-confirm-dialog-renderer/div[2]/div/yt-button-renderer[2]/a/tp-yt-paper-button/yt-formatted-string')
 
 def yt_like(i):
     
@@ -101,27 +133,31 @@ def yt_like(i):
     # browser.save_screenshot("SCROLL_DOWN.png")
     try:
         scroll_down = wait(browser,60).until(EC.presence_of_element_located((By.XPATH, '//*[@id="container"]/h1/yt-formatted-string')))
-        #browser.execute_script("arguments[0].scrollIntoView();", scroll_down)
+        browser.execute_script("arguments[0].scrollIntoView();", scroll_down)
         
     except:
         browser.save_screenshot("errror_headles.png")
    
-      
-    browser.execute_script("window.scrollTo(0, 4000)")
-    sleep(12)
     
-    try:
-        target_report = wait(browser,60).until(EC.presence_of_element_located((By.XPATH, '(//ytd-comment-renderer/div[3]/div[2]/ytd-comment-action-buttons-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button)[1]')))
-    except:
-        browser.save_screenshot("errror_headles3.png")
+    while True:
+    
+        try:
+            browser.execute_script("window.scrollTo(0, 1080)")
+            sleep(10)
+            target_report = wait(browser,5).until(EC.presence_of_element_located((By.XPATH, '(//ytd-comment-renderer/div[3]/div[2]/ytd-comment-action-buttons-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button)[1]')))
+            break
+        except:
+             
+        
+            browser.save_screenshot("errror_headles6.png")
      
     target_name = wait(browser,60).until(EC.presence_of_element_located((By.XPATH, '//a/ytd-channel-name/div/div/yt-formatted-string'))).text
  
-    
     print(f"[*] [{channel_name}] Found Comment from [{target_name}]")
-
+ 
+    
     sleep(2)
-    xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-paper-dialog[2]/yt-confirm-dialog-renderer/div[2]/div/yt-button-renderer[2]/a/tp-yt-paper-button/yt-formatted-string')
+    xpath_el('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/ytd-comments/ytd-item-section-renderer/div[3]/ytd-comment-thread-renderer[1]/ytd-comment-renderer/div[3]/div[2]/ytd-comment-action-buttons-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button/button')
     print(f"[*] [{channel_name}] Like Successfully")
 
 def menu_like(i):
@@ -205,7 +241,7 @@ def menu_report(i):
         
         print(f"[*] [{channel_name}] Switch Channel")
         try:
-            yt_like(i)
+            yt_report(i)
         except:
             pass
         try:
