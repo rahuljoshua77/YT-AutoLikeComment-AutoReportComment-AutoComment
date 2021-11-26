@@ -1,6 +1,5 @@
 import undetected_chromedriver as uc
-uc.install()
-from selenium import webdriver
+uc.install()from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 from selenium.webdriver.common.by import By
@@ -189,6 +188,8 @@ def menu_like(i):
         pass
     browser.get(targeturl)
     sleep(1)
+    browser.get(targeturl)
+    sleep(1)
     action_change_web()
     multi_acc = wait(browser,30).until(EC.presence_of_all_elements_located((By.XPATH, '//tp-yt-paper-icon-item[@class="style-scope ytd-account-item-renderer"]')))
     
@@ -232,6 +233,8 @@ def menu_report(i):
         browser.switch_to.window(browser.window_handles[0])
     except:
         pass
+    browser.get(targeturl)
+    sleep(1)
     browser.get(targeturl)
     sleep(1)
     action_change_web()
