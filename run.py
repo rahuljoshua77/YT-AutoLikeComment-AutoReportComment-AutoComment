@@ -70,6 +70,7 @@ def menu_comment(i):
     global browser
     firefox_options.add_argument('--incognito')
     firefox_options.add_argument(f"user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.20 Safari/537.36")
+    firefox_options.add_experimental_option("mobileEmulation", mobile_emulation)
     browser = webdriver.Chrome(options=firefox_options)
     browser.get('https://accounts.google.com/signin/v2/identifier?service=mail&passive=1209600&osid=1&continue=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&followup=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&emr=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin')
     print("[*] Trying to Login")
