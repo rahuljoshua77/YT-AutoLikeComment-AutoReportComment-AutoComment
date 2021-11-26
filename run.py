@@ -119,11 +119,10 @@ def yt_like(i):
  
     
     print(f"[*] [{channel_name}] Found Comment from [{target_name}]")
-    xpath_el('//ytd-menu-service-item-renderer[@class="style-scope ytd-menu-popup-renderer iron-selected"]')
-    print(f"[*] [{channel_name}] Like Successfully")
+
     sleep(2)
     xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-paper-dialog[2]/yt-confirm-dialog-renderer/div[2]/div/yt-button-renderer[2]/a/tp-yt-paper-button/yt-formatted-string')
-
+    print(f"[*] [{channel_name}] Like Successfully")
 
 def menu_like(i):
     i = i.split("|")
