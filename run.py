@@ -48,7 +48,16 @@ def xpath_el(el):
     return wait(browser,30).until(EC.presence_of_element_located((By.XPATH, el))).click()
 
 def action_change():
-    browser.get("https://m.youtube.com/")
+    browser.execute_script(f"window.open('https://www.youtube.com/');")
+    browser.switch_to.window(browser.window_handles[1])
+    sleep(0.5)
+    browser.close()
+    sleep(1)
+    try:
+        browser.switch_to.window(browser.window_handles[0])
+    except:
+        pass
+    browser.get("https://www.youtube.com/")
     sleep(5)
     print(f"[*] Trying Use Channel")
     wait(browser,50).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytm-app/ytm-mobile-topbar-renderer/header/div/ytm-topbar-menu-button-renderer/button'))).click()
@@ -69,7 +78,7 @@ def menu_comment(i):
     password = i[1]
     global browser
     firefox_options.add_argument('--incognito')
-    firefox_options.add_argument(f"user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.20 Safari/537.36")
+    firefox_options.add_argument(f"user-agent=Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/{random.randint(100,800)}.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Mobile Safari/{random.randint(100,800)}.{random.randint(10,99)}")
     firefox_options.add_experimental_option("mobileEmulation", mobile_emulation)
     browser = webdriver.Chrome(options=firefox_options)
     browser.get('https://accounts.google.com/signin/v2/identifier?service=mail&passive=1209600&osid=1&continue=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&followup=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&emr=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin')
@@ -82,13 +91,14 @@ def menu_comment(i):
     multi_acc = wait(browser,30).until(EC.presence_of_all_elements_located((By.XPATH, '(//div[@class="account-item-content"])')))
     comment_file = "comment.txt"
     comment_get = open(f"{cwd}/{comment_file}","r")
-    get_comment = myfile.read()
+    get_comment = comment_get.read()
+    
     for i in range(1,len(multi_acc)+1):
         channel_name = wait(browser,30).until(EC.presence_of_element_located((By.XPATH, f'(/html/body/div[2]/div/ytm-multi-page-menu-renderer/div/ytm-account-section-list-renderer/div/button/ytm-account-item-renderer/div/div/div/div[1])[{i}]'))).text
         sleep(1.5)
         xpath_el(f'(//div[@class="account-item-content"])[{i}]')
         print(f"[*] [{channel_name}] Switch Channel")
-      
+        
         print(f"[*] [{channel_name}] Trying to Comment")
         try:
             yt_comment(i)
@@ -108,21 +118,21 @@ def yt_report(i):
         
     except:
         browser.save_screenshot("errror_headles.png")
-   
-      
-    while True:
-    
-        try:
-            browser.execute_script("window.scrollTo(0, 1080)")
-            sleep(10)
-            target_report = wait(browser,5).until(EC.presence_of_element_located((By.XPATH, '(//ytd-comment-renderer/div[3]/div[2]/ytd-comment-action-buttons-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button)[1]')))
-            break
-        except:
-            browser.save_screenshot("errror_headles6.png")
-     
-    target_name = wait(browser,60).until(EC.presence_of_element_located((By.XPATH, '//a/ytd-channel-name/div/div/yt-formatted-string'))).text
+         
+    try:
+        target_report = wait(browser,5).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/ytd-comments/ytd-item-section-renderer/div[3]/ytd-comment-thread-renderer[1]/ytd-comment-renderer/div[3]/div[3]/ytd-menu-renderer/yt-icon-button/button')))
+        #print('target view')
+    except:
+        browser.save_screenshot("errror_headles6.png")
+    try:
+        target_name = wait(browser,5).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/ytd-comments/ytd-item-section-renderer/div[3]/ytd-comment-thread-renderer[1]/ytd-comment-renderer/div[3]/div[2]/div[1]/div[2]/h3/a/span'))).text
+        # print('target can"t view ')
+    except:
+        pass
+
     target_report.click()
-    
+    #sleep(5000)
+    browser.save_screenshot("click_view.png")
     print(f"[*] [{channel_name}] Found Comment from [{target_name}]")
     xpath_el('//ytd-menu-service-item-renderer[@class="style-scope ytd-menu-popup-renderer iron-selected"]')
     sleep(2)
@@ -143,29 +153,25 @@ def yt_like(i):
         
     except:
         browser.save_screenshot("errror_headles.png")
-   
-    
-    while True:
-    
-        try:
-            browser.execute_script("window.scrollTo(0, 1080)")
-            sleep(10)
-            target_report = wait(browser,5).until(EC.presence_of_element_located((By.XPATH, '(//ytd-comment-renderer/div[3]/div[2]/ytd-comment-action-buttons-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button)[1]')))
-            break
-        except:
-             
-        
-            browser.save_screenshot("errror_headles6.png")
-     
-    target_name = wait(browser,60).until(EC.presence_of_element_located((By.XPATH, '//a/ytd-channel-name/div/div/yt-formatted-string'))).text
+    try:
+        target_report = wait(browser,30).until(EC.presence_of_element_located((By.XPATH, '(//ytd-comment-renderer/div[3]/div[2]/ytd-comment-action-buttons-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button)[1]')))
+        browser.execute_script("arguments[0].scrollIntoView();", target_report)
+        #print('target view')
+    except:
+        browser.save_screenshot("errror_headles6.png") 
  
+
+    try:
+        target_name = wait(browser,5).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/ytd-comments/ytd-item-section-renderer/div[3]/ytd-comment-thread-renderer[1]/ytd-comment-renderer/div[3]/div[2]/div[1]/div[2]/h3/a/span'))).text
+    except:
+        print('yahahah error')
+    #https://www.youtube.com/watch?v=nrHrS2tiKJ0&lc=Ugwi2X9NQngSEM2IEcV4AaABAg
     print(f"[*] [{channel_name}] Found Comment from [{target_name}]")
- 
     
     sleep(2)
     xpath_el('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/ytd-comments/ytd-item-section-renderer/div[3]/ytd-comment-thread-renderer[1]/ytd-comment-renderer/div[3]/div[2]/ytd-comment-action-buttons-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button/button')
     print(f"[*] [{channel_name}] Like Successfully")
-
+    
 def menu_like(i):
     i = i.split("|")
     email = i[0]
@@ -265,14 +271,27 @@ def yt_comment(i):
     sleep(3)
     
     browser.get(targeturl)
-    print(f"[*] [{channel_name}] Trying to Comment")
+    #print(f"[*] [{channel_name}] Trying to Comment")
     wait(browser,30).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#app > div.page-container > ytm-watch > ytm-single-column-watch-next-results-renderer > ytm-item-section-renderer:nth-child(3) > lazy-list > ytm-comments-entry-point-header-renderer > button'))).click()
-    wait(browser,30).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#app > div.page-container > ytm-watch > ytm-engagement-panel > ytm-engagement-panel-section-list-renderer > div > div > div.engagement-panel-content-wrapper > ytm-section-list-renderer > lazy-list > ytm-item-section-renderer > ytm-comments-header-renderer > ytm-comment-simplebox-renderer > div'))).click()
-    input_comment = wait(browser,30).until(EC.presence_of_element_located((By.XPATH, '//textarea[@class="comment-simplebox-reply"]')))
+    browser.save_screenshot("CHECK_COMMENT_02.png")
+    sleep(0.5)
+    wait(browser,30).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytm-app/div[1]/ytm-watch/ytm-engagement-panel/ytm-engagement-panel-section-list-renderer/div/div/div[2]/ytm-section-list-renderer/lazy-list/ytm-item-section-renderer/ytm-comments-header-renderer/ytm-comment-simplebox-renderer/div/div/button'))).click()
+    browser.save_screenshot("CHECK_COMMENT_01.png")
+    sleep(0.5)
+    input_comment = wait(browser,30).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytm-app/div[1]/ytm-watch/ytm-engagement-panel/ytm-engagement-panel-section-list-renderer/div/div/div[2]/ytm-section-list-renderer/lazy-list/ytm-item-section-renderer/ytm-comments-header-renderer/ytm-comment-simplebox-renderer/div/textarea')))
     input_comment.send_keys(get_comment)
-    wait(browser,30).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#app > div.page-container > ytm-watch > ytm-engagement-panel > ytm-engagement-panel-section-list-renderer > div > div > div.engagement-panel-content-wrapper > ytm-section-list-renderer > lazy-list > ytm-item-section-renderer > ytm-comments-header-renderer > ytm-comment-simplebox-renderer > div > div > c3-material-button:nth-child(2) > button'))).click()
-    sleep(2)
-    print(f"[*] [{channel_name}] Comment Successfully")
+    sleep(0.5)
+ 
+    browser.save_screenshot("CHECK_COMMENT_03.png")
+    wait(browser,30).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytm-app/div[1]/ytm-watch/ytm-engagement-panel/ytm-engagement-panel-section-list-renderer/div/div/div[2]/ytm-section-list-renderer/lazy-list/ytm-item-section-renderer/ytm-comments-header-renderer/ytm-comment-simplebox-renderer/div/div/c3-material-button[2]/button'))).click()
+    sleep(5)
+ 
+    
+    
+    notif = wait(browser,30).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytm-app/div[1]/ytm-watch/ytm-engagement-panel/ytm-engagement-panel-section-list-renderer/div/div/div[2]/ytm-section-list-renderer/lazy-list/ytm-item-section-renderer/lazy-list/ytm-comment-thread-renderer[1]/ytm-comment-renderer/button/div[1]/span[2]'))).text
+    
+    browser.save_screenshot("CHECK_COMMENT.png")
+    print(f"[*] [{channel_name}] Comment Successfully | {notif}")
     
     
 def login(email, password):
@@ -281,17 +300,24 @@ def login(email, password):
     global browser
 
     sleep(3)
-
-    wait(browser,30).until(EC.presence_of_element_located((By.XPATH, '//input[@type="email"]'))).send_keys(email)
-    browser.find_element(By.XPATH,'//input[@type="email"]').send_keys(Keys.ENTER)
-
+    #browser.save_screenshot("commeng_log.png")
+    try:
+        wait(browser,30).until(EC.presence_of_element_located((By.XPATH, '//input[@type="email"]'))).send_keys(email)
+        #browser.save_screenshot("commeng_email.png")
+        browser.find_element(By.XPATH,'//input[@type="email"]').send_keys(Keys.ENTER)
+    except:
+        browser.save_screenshot("commeng_log_err.png")
+        print("errr")
     sleep(2)
 
     try:
         element = wait(browser,15).until(EC.presence_of_element_located((By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input')))
         element.click()
+        #browser.save_screenshot("commeng_pass_1.png")
         element.send_keys(password)
+        #browser.save_screenshot("commeng_pass_2.png")
         element.send_keys(Keys.ENTER)
+        #browser.save_screenshot("commeng_pass_3.png")
     except:
         browser.refresh()
 
