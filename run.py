@@ -23,7 +23,7 @@ mobile_emulation = {
 
 firefox_options = webdriver.ChromeOptions()
 firefox_options.add_argument('--no-sandbox')
-firefox_options.headless = True
+firefox_options.headless = False
 firefox_options.add_argument('--disable-setuid-sandbox')
 firefox_options.add_argument('disable-infobars')
 firefox_options.add_argument('--ignore-certifcate-errors')
@@ -62,7 +62,7 @@ def action_change():
     print(f"[*] Trying Use Channel")
     wait(browser,50).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytm-app/ytm-mobile-topbar-renderer/header/div/ytm-topbar-menu-button-renderer/button'))).click()
     sleep(1.5)
-    xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-iron-dropdown/div/ytd-multi-page-menu-renderer/div[3]/div[1]/yt-multi-page-menu-section-renderer[1]/div[2]/ytd-compact-link-renderer[4]/a/tp-yt-paper-item/div[2]/yt-formatted-string[1]')
+    xpath_el('/html/body/div[2]/div/ytm-multi-page-menu-renderer/div/ytm-active-account-header-renderer/div/div/div[1]')
 
 def action_change_web():
     sleep(3)
@@ -92,6 +92,7 @@ def menu_comment(i):
     comment_file = "comment.txt"
     comment_get = open(f"{cwd}/{comment_file}","r")
     get_comment = comment_get.read()
+    get_comment = get_comment.split("\n")
     
     for i in range(1,len(multi_acc)+1):
         channel_name = wait(browser,30).until(EC.presence_of_element_located((By.XPATH, f'(/html/body/div[2]/div/ytm-multi-page-menu-renderer/div/ytm-account-section-list-renderer/div/button/ytm-account-item-renderer/div/div/div/div[1])[{i}]'))).text
@@ -101,9 +102,10 @@ def menu_comment(i):
         
         print(f"[*] [{channel_name}] Trying to Comment")
         try:
-            yt_comment(i)
+            yt_comment(get_comment[i-1])
         except:
             pass
+	        #sleep(5000)
         try:
             action_change()
         except:
@@ -119,29 +121,26 @@ def yt_report(i):
     except:
         browser.save_screenshot("errror_headles.png")
          
-    try:
-        target_report = wait(browser,5).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/ytd-comments/ytd-item-section-renderer/div[3]/ytd-comment-thread-renderer[1]/ytd-comment-renderer/div[3]/div[3]/ytd-menu-renderer/yt-icon-button/button')))
-        #print('target view')
-    except:
-        browser.save_screenshot("errror_headles6.png")
+    
     try:
         target_name = wait(browser,5).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/ytd-comments/ytd-item-section-renderer/div[3]/ytd-comment-thread-renderer[1]/ytd-comment-renderer/div[3]/div[2]/div[1]/div[2]/h3/a/span'))).text
         # print('target can"t view ')
     except:
         pass
 
-    target_report.click()
+ 
     #sleep(5000)
     browser.save_screenshot("click_view.png")
     print(f"[*] [{channel_name}] Found Comment from [{target_name}]")
-    xpath_el('//ytd-menu-service-item-renderer[@class="style-scope ytd-menu-popup-renderer iron-selected"]')
+    xpath_el('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/ytd-comments/ytd-item-section-renderer/div[3]/ytd-comment-thread-renderer[1]/ytd-comment-renderer/div[3]/div[3]/ytd-menu-renderer/yt-icon-button/button')
     sleep(2)
-    xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-paper-dialog/yt-report-form-modal-renderer/tp-yt-paper-dialog-scrollable/div/div/yt-options-renderer/div/tp-yt-paper-radio-group/tp-yt-paper-radio-button[1]/div[1]')
+    xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-iron-dropdown/div/ytd-menu-popup-renderer')
     sleep(2)
-    xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-paper-dialog/yt-report-form-modal-renderer/div/yt-button-renderer[2]/a/tp-yt-paper-button')
+    xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-paper-dialog/yt-report-form-modal-renderer/tp-yt-paper-dialog-scrollable/div/div/yt-options-renderer/div/tp-yt-paper-radio-group/tp-yt-paper-radio-button[1]')
+    xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-paper-dialog/yt-report-form-modal-renderer/div/yt-button-renderer[2]')
     print(f"[*] [{channel_name}] Report Successfully")
     sleep(2)
-    xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-paper-dialog[2]/yt-confirm-dialog-renderer/div[2]/div/yt-button-renderer[2]/a/tp-yt-paper-button/yt-formatted-string')
+    xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-paper-dialog[2]/yt-confirm-dialog-renderer/div[2]/div/yt-button-renderer[2]/a/tp-yt-paper-button')
 
 def yt_like(i):
     
@@ -155,7 +154,7 @@ def yt_like(i):
         browser.save_screenshot("errror_headles.png")
     try:
         target_report = wait(browser,30).until(EC.presence_of_element_located((By.XPATH, '(//ytd-comment-renderer/div[3]/div[2]/ytd-comment-action-buttons-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button)[1]')))
-        browser.execute_script("arguments[0].scrollIntoView();", target_report)
+        #browser.execute_script("arguments[0].scrollIntoView();", target_report)
         #print('target view')
     except:
         browser.save_screenshot("errror_headles6.png") 
@@ -167,7 +166,7 @@ def yt_like(i):
         print('yahahah error')
     #https://www.youtube.com/watch?v=nrHrS2tiKJ0&lc=Ugwi2X9NQngSEM2IEcV4AaABAg
     print(f"[*] [{channel_name}] Found Comment from [{target_name}]")
-    
+    browser.save_screenshot("test.png") 
     sleep(2)
     xpath_el('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[5]/div[1]/div/ytd-comments/ytd-item-section-renderer/div[3]/ytd-comment-thread-renderer[1]/ytd-comment-renderer/div[3]/div[2]/ytd-comment-action-buttons-renderer/div[1]/ytd-toggle-button-renderer[1]/a/yt-icon-button/button')
     print(f"[*] [{channel_name}] Like Successfully")
@@ -267,19 +266,23 @@ def menu_report(i):
         except:
             pass
 
-def yt_comment(i):
+def yt_comment(come):
     sleep(3)
     
     browser.get(targeturl)
+    try:
+        xpath_el('/html/body/ytm-app/div[1]/ytm-watch/ytm-single-column-watch-next-results-renderer/ytm-playlist/ytm-playlist-panel-header/c3-material-button/button/div')
+    except:
+        pass
     #print(f"[*] [{channel_name}] Trying to Comment")
-    wait(browser,30).until(EC.presence_of_element_located((By.CSS_SELECTOR, '#app > div.page-container > ytm-watch > ytm-single-column-watch-next-results-renderer > ytm-item-section-renderer:nth-child(3) > lazy-list > ytm-comments-entry-point-header-renderer > button'))).click()
+    wait(browser,30).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytm-app/div[1]/ytm-watch/ytm-single-column-watch-next-results-renderer/ytm-item-section-renderer[1]/lazy-list/ytm-comments-entry-point-header-renderer/button'))).click()
     browser.save_screenshot("CHECK_COMMENT_02.png")
     sleep(0.5)
     wait(browser,30).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytm-app/div[1]/ytm-watch/ytm-engagement-panel/ytm-engagement-panel-section-list-renderer/div/div/div[2]/ytm-section-list-renderer/lazy-list/ytm-item-section-renderer/ytm-comments-header-renderer/ytm-comment-simplebox-renderer/div/div/button'))).click()
     browser.save_screenshot("CHECK_COMMENT_01.png")
     sleep(0.5)
     input_comment = wait(browser,30).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytm-app/div[1]/ytm-watch/ytm-engagement-panel/ytm-engagement-panel-section-list-renderer/div/div/div[2]/ytm-section-list-renderer/lazy-list/ytm-item-section-renderer/ytm-comments-header-renderer/ytm-comment-simplebox-renderer/div/textarea')))
-    input_comment.send_keys(get_comment)
+    input_comment.send_keys(come)
     sleep(0.5)
  
     browser.save_screenshot("CHECK_COMMENT_03.png")
