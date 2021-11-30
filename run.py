@@ -23,7 +23,7 @@ mobile_emulation = {
 
 firefox_options = webdriver.ChromeOptions()
 firefox_options.add_argument('--no-sandbox')
-firefox_options.headless = False
+firefox_options.headless = True
 firefox_options.add_argument('--disable-setuid-sandbox')
 firefox_options.add_argument('disable-infobars')
 firefox_options.add_argument('--ignore-certifcate-errors')
@@ -226,6 +226,7 @@ def menu_report(i):
     sleep(3)
     global browser
     global channel_name
+    firefox_options.headless = False
     firefox_options.add_argument('--incognito')
     firefox_options.add_argument("--window-size=1980,1020")
     firefox_options.add_argument('--start-maximized')
