@@ -50,7 +50,7 @@ def xpath_el(el):
 def action_change():
     browser.execute_script(f"window.open('https://www.youtube.com/');")
     browser.switch_to.window(browser.window_handles[1])
-    sleep(0.5)
+    sleep(5)
     browser.close()
     sleep(1)
     try:
@@ -62,7 +62,7 @@ def action_change():
     print(f"[*] Trying Use Channel")
     wait(browser,50).until(EC.presence_of_element_located((By.XPATH, '/html/body/ytm-app/ytm-mobile-topbar-renderer/header/div/ytm-topbar-menu-button-renderer/button'))).click()
     sleep(1.5)
-    xpath_el('//div[@aria-label="Ganti akun"]')
+    xpath_el('/html/body/ytd-app/ytd-popup-container/tp-yt-iron-dropdown/div/ytd-multi-page-menu-renderer/div[3]/div[1]/yt-multi-page-menu-section-renderer[1]/div[2]/ytd-compact-link-renderer[4]/a/tp-yt-paper-item/div[2]/yt-formatted-string[1]')
 
 def action_change_web():
     sleep(3)
