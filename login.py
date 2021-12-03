@@ -113,7 +113,8 @@ if __name__ == '__main__':
     for i in k:
         try:
             open_browser(i)
-        except:
+        except Exception as e:
+            print(e) 
             try:
                 browser.quit()
             except:
