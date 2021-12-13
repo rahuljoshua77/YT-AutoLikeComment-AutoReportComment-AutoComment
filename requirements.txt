@@ -1,3 +1,2 @@
-undetected-chromedriver==3.0.2
-webdriver-manager==3.3.0
-selenium==3.141.0
+telethon
+pytgcalls
